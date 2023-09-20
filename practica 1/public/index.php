@@ -38,8 +38,7 @@ if (isset($parameters['page'])) {
                 . htmlentities($parameters['user_name']) . '</b></mark>';
         }
     } else {
-        $configuration['{FEEDBACK}'] = "<mark>ERROR: Captcha buit <b>"
-                . htmlentities($parameters['user_name']) . '</b></mark>';
+        $configuration['{FEEDBACK}'] = "<mark>ERROR: Algun dels camps clau està buit. </mark>";
     }
 } else if (isset($parameters['login'])) {
     $db = new PDO($db_connection);
@@ -58,6 +57,6 @@ if (isset($parameters['page'])) {
     }
 }
 // process template and show output
-$html = file_get_contents('plantilla_' . $template . '.html', true);
+$html = file_get_contents($template . '.php', true);
 $html = str_replace(array_keys($configuration), array_values($configuration), $html);
 echo $html;
