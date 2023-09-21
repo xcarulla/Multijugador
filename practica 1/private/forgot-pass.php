@@ -4,7 +4,7 @@
 <head>
     <!-- dades tècniques de la pàgina -->
     <meta charset="utf-8">
-    <title>{SITE_NAME} :: Inici de sessió</title>
+    <title>{SITE_NAME} :: Registre nou usuari</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- per a dispositius mòbils -->
     <meta name="author" content="Antonio Bueno (UdG)">
     <!-- estètica de la pàgina -->
@@ -13,9 +13,6 @@
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
     <script defer src="el_meu.js"></script>
-
-    <!-- reCaptcha -->
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -26,24 +23,22 @@
             <div>{FEEDBACK}</div>
         </header>
         <section>
-            <form method="{METHOD}" action="{LOGIN_LOGOUT_URL}">
+
+            <form method="{METHOD}" action="{REGISTER_URL}">
                 <header>
-                    <h2>Inici de sessió</h2>
+                    <h2>Restaurar contrassenya</h2>
                 </header>
-                <label for="login_username">Nom d'usuari</label>
-                <input id="login_username" type="text" name="user_name" value="{LOGIN_USERNAME}" />
-                <label for="login_password">Contrasenya</label>
-                <input id="login_password" type="password" name="user_password" />
-                </br>
-				<div class="g-recaptcha" data-sitekey="6LdZGDooAAAAAIbL84LHgRol1OgaXvQk7XMEyxkK"></div>
-				</br>
-                <input type="submit" name="login" value="Iniciar sessió" />
-                <a href="{PASS_MAIL_URL}">{PASS_MAIL}</a>
+
+                <label for="register_mail">Correu electrònic</label>
+                <input id="register_mail" type="email" name="user_mail" required/>
+
+                <input type="submit" name="forgotpass" value="Enviar" />
             </form>
+
         </section>
         <section>
             <div>
-                <a href="{REGISTER_URL}">Registra un nou compte</a>
+                <a href="{REGISTER_URL}">Registrar-me</a>
             </div>
         </section>
     </main>

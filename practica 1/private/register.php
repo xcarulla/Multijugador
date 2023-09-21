@@ -33,7 +33,7 @@
                 <label for="register_username">Nom d'usuari</label>
                 <input id="register_username" type="text" name="user_name" value="{REGISTER_USERNAME}" required/>
                 <label for="register_mail">Correu electrònic</label>
-                <input id="register_mail" type="text" name="user_mail" required/>
+                <input id="register_mail" type="email" name="user_mail" required/>
                 <label for="register_password">Contrasenya</label>
                 <input id="register_password" type="password" pattern=".{8,}"name="user_password" required/>
                 <p>Mida mínima 8 caràcters.</p>
