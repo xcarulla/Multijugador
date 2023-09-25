@@ -1,5 +1,8 @@
 <?php
 
+require '..\vendor\autoload.php';
+use Mailgun\Mailgun;
+
 // defaults
 $template = 'home';
 $db_connection = 'sqlite:..\private\users.db';
@@ -12,7 +15,8 @@ $configuration = array(
     '{SITE_NAME}'         => 'La meva pàgina',
     '{PASS_MAIL}'         => 'No recordo la contrassenya',
     '{PASS_MAIL_URL}'     => '/?page=passmail',
-    '{PASS_RESET}'        => 'pass reset'
+    '{PASS_RESET}'        => 'pass reset',
+    '{RESET_PASS_URL}'     => '/?page=resetpass'
 );
 // parameter processing
 $parameters = $_GET;
@@ -27,7 +31,8 @@ if (isset($parameters['page'])) {
     } else if ($parameters['page'] == 'passmail') {
         $template = 'forgot-pass';
         //$configuration['{LOGIN_USERNAME}'] = '';
-    }
+    } else if ($parameters['page'] == 'resetpass')
+        $template = 'reset-pass';
 } else if (isset($parameters['register'])) {
     if($parameters['g-recaptcha-response']){
         $db = new PDO($db_connection);
@@ -80,7 +85,20 @@ if (isset($parameters['page'])) {
     $query->bindValue(':dataExpiracio', $dataExpiracio);
     $query->bindValue(':email', $email);
     if($query->execute()){
-        mail("carullagames@gmail.com","mail prova","hola");
+        // First, instantiate the SDK with your API credentials
+        $mg = Mailgun::create('78098a1a27bc16a4e6f83ad771c38524-db137ccd-674fe33e'); // For US servers
+        //$mg = Mailgun::create('78098a1a27bc16a4e6f83ad771c38524-db137ccd-674fe33e', 'https://api.eu.mailgun.net'); // For EU servers
+
+        // Now, compose and send your message.
+        // $mg->messages()->send($domain, $params);
+        $text = 'Click el link per restaurar la contrassenya: http://localhost:8000/index.php/?page=resetpass&token=';
+        $text .= $token;
+        $mg->messages()->send('sandbox84365c67bf8342188278e0fdadfeda3f.mailgun.org', [
+        'from'    => 'multijugador1F@gmail.com',
+        'to'      => $email,
+        'subject' => 'Recuperació de contrassenya',
+        'text'    => $text
+        ]);
     }
 }
 // process template and show output
