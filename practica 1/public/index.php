@@ -1,7 +1,9 @@
 <?php
 
-require '..\vendor\autoload.php';
-use Mailgun\Mailgun;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+ 
+require_once '../vendor/autoload.php';
 
 // defaults
 $template = 'home';
@@ -16,7 +18,8 @@ $configuration = array(
     '{PASS_MAIL}'         => 'No recordo la contrassenya',
     '{PASS_MAIL_URL}'     => '/?page=passmail',
     '{PASS_RESET}'        => 'pass reset',
-    '{RESET_PASS_URL}'     => '/?page=resetpass'
+    '{RESET_PASS_URL}'    => '/?page=resetpass',
+    '{USER_MAIL}'         => ''
 );
 // parameter processing
 $parameters = $_GET;
@@ -31,8 +34,25 @@ if (isset($parameters['page'])) {
     } else if ($parameters['page'] == 'passmail') {
         $template = 'forgot-pass';
         //$configuration['{LOGIN_USERNAME}'] = '';
-    } else if ($parameters['page'] == 'resetpass')
-        $template = 'reset-pass';
+    } else if ($parameters['page'] == 'resetpass') {
+        $token = $parameters['token'];
+
+        $token_hash = hash("sha256", $token);
+        
+        $db = new PDO($db_connection);
+        $sql = "SELECT * FROM users
+                WHERE reset_token_hash = :token_hash";
+        $query = $db->prepare($sql);
+        $query->bindValue(':token_hash', $token_hash);
+        $query->execute();
+        $user = $query->fetchObject();
+        if (!$user or strtotime($user->reset_token_expires_at) <= time()) {
+            $template = 'bad-token';
+        } else {
+            $template = 'reset-pass';
+            $configuration['{USER_MAIL}'] = $user->user_mail;
+        }
+    }   
 } else if (isset($parameters['register'])) {
     if($parameters['g-recaptcha-response']){
         $db = new PDO($db_connection);
@@ -85,21 +105,33 @@ if (isset($parameters['page'])) {
     $query->bindValue(':dataExpiracio', $dataExpiracio);
     $query->bindValue(':email', $email);
     if($query->execute()){
-        // First, instantiate the SDK with your API credentials
-        $mg = Mailgun::create('78098a1a27bc16a4e6f83ad771c38524-db137ccd-674fe33e'); // For US servers
-        //$mg = Mailgun::create('78098a1a27bc16a4e6f83ad771c38524-db137ccd-674fe33e', 'https://api.eu.mailgun.net'); // For EU servers
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Username = 'multijugador1F@gmail.com';
+        $mail->Password = 'gcae gvys ocku hjkz' ;   //app password
+        $mail->Port = 465;
+        $mail->SMTPSecure = "ssl";
 
-        // Now, compose and send your message.
-        // $mg->messages()->send($domain, $params);
-        $text = 'Click el link per restaurar la contrassenya: http://localhost:8000/index.php/?page=resetpass&token=';
-        $text .= $token;
-        $mg->messages()->send('sandbox84365c67bf8342188278e0fdadfeda3f.mailgun.org', [
-        'from'    => 'multijugador1F@gmail.com',
-        'to'      => $email,
-        'subject' => 'Recuperació de contrassenya',
-        'text'    => $text
-        ]);
+        $mail->setFrom('multijugador1F@gmail.com', 'Multijugador Grup 1F');
+        $mail->addAddress($email, 'usuari');
+        $mail->isHTML(true);
+        $mail->Subject = 'Restaurar contrassenya';
+        $mail->Body = "<h4> Restaurar contrassenya </h4>
+            Clica <a href=\"http://localhost:8000/?page=resetpass&token=$token\">aquí</a> per canviar la contrassenya.";
+        if (!$mail->send()) {
+            echo '<script language="javascript">alert("Error: Mail no enviat. (' . $mail->ErrorInfo . '");</script>)';
+        } else {
+            echo '<script language="javascript">alert("Mail enviat correctament.");</script>';
+        }
+        $mail->smtpClose();
     }
+} else if(isset($parameters['changepass'])){
+
+    echo $configuration['{USER_MAIL}'];
+
 }
 // process template and show output
 $html = file_get_contents($template . '.php', true);

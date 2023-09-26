@@ -1,25 +1,46 @@
-<?php
+<!DOCTYPE html>
+<html lang="ca" color-mode="user">
 
-$token = $_GET["token"];
+<head>
+    <!-- dades tècniques de la pàgina -->
+    <meta charset="utf-8">
+    <title>{SITE_NAME} :: Canviar contrassenya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- per a dispositius mòbils -->
+    <meta name="author" content="Antonio Bueno (UdG)">
+    <!-- estètica de la pàgina -->
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="mvp.css">
+    <link rel="stylesheet" href="el_meu.css">
+    <!-- per afegir interactivitat a la pàgina -->
+    <script defer src="el_meu.js"></script>
+</head>
 
-$token_hash = hash("sha256", $token);
+<body>
+    <!-- contingut visible de la pàgina -->
+    <main>
+        <header>
+            <h1><a href="/">{SITE_NAME}</a></h1>
+            <div>{FEEDBACK}</div>
+        </header>
+        <section>
 
+            <form method="{METHOD}" action="{RESET_PASS_URL}">
+                <header>
+                    <h2>Canviar contrassenya</h2>
+                    <h3>Compte {USER_MAIL}</h3>
+                </header>
 
-$db_connection = 'sqlite:users.db';
-$db = new PDO($db_connection);
-$sql = "SELECT * FROM user
-        WHERE reset_token_hash = :token_hash";
-$query = $db->prepare($sql);
-$query->bindValue(':token_hash', $token_hash);
-$query->execute();
-$user = $query->fetchObject();
-if ($user === null) {
-    die("token not found");
-}
+                <label for="email">Email:</label>
+                <input id="email" type="email" name="emails" value="{USER_MAIL}" readonly/>
+                <label for="password">Nova contrassenya:</label>
+                <input id="password" pattern=".{8,}" type="password" name="password" required/>
+                <label for="password_copy">Confirma la contrassenya:</label>
+                <input id="password_copy" pattern=".{8,}" type="password" name="password_copy" required/>
+                <input type="submit" name="changepass" value="Canviar contrassenya"/>
+            </form>
 
-if (strtotime($user["reset_token_expires_at"]) <= time()) {
-    die("token has expired");
-}
+        </section>
+    </main>
+</body>
 
-echo "tot ok";
-
+</html>
