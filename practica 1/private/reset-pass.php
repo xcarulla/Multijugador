@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="mvp.css">
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
-    <script defer src="el_meu.js"></script>
+    <script defer src="compare_pass.js"></script>
 </head>
 
 <body>
@@ -24,21 +24,21 @@
         </header>
         <section>
 
-            <form method="{METHOD}" action="{RESET_PASS_URL}">
+            <form id="form" method="{METHOD}" action="{RESET_PASS_URL}">
                 <header>
                     <h2>Canviar contrassenya</h2>
-                    <h3>Compte {USER_MAIL}</h3>
+                    <!-- <h3>Compte {USER_MAIL}</h3-->
                 </header>
 
-                <label for="email">Email:</label>
-                <input id="email" type="email" name="emails" value="{USER_MAIL}" readonly/>
+                <!-- <label for="email">Email:</label> -->
+                <!-- <input id="email" type="email" name="emails" value="{USER_MAIL}" readonly/> -->
                 <label for="password">Nova contrassenya:</label>
                 <input id="password" pattern=".{8,}" type="password" name="password" required/>
                 <label for="password_copy">Confirma la contrassenya:</label>
                 <input id="password_copy" pattern=".{8,}" type="password" name="password_copy" required/>
-                <input type="submit" name="changepass" value="Canviar contrassenya"/>
+                <div id="error"></div>
+                <input type="submit" name="changepass" value="Canviar"/>
             </form>
-
         </section>
     </main>
 </body>

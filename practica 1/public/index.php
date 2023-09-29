@@ -52,7 +52,7 @@ if (isset($parameters['page'])) {
             $template = 'bad-token';
         } else {
             $template = 'reset-pass';
-            $configuration['{USER_MAIL}'] = $user->user_mail;
+            //$configuration['{USER_MAIL}'] = $user->user_mail;
         }
     }   
 } else if (isset($parameters['register'])) {
@@ -94,7 +94,7 @@ if (isset($parameters['page'])) {
     $email = $parameters['user_mail'];
     $token = bin2hex(random_bytes(16));
     $token_hash = hash("sha256", $token);
-    $dataExpiracio = date("Y-m-d H:m:s", time() + 60*30);
+    $dataExpiracio = date("Y-m-d", time() + 60*60*24);         //$dataExpiracio = date("Y-m-d H:m:s", time() + 60*30);
 
     $sql = 
     'UPDATE users

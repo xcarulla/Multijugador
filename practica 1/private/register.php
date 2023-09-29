@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="mvp.css">
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
-    <script defer src="el_meu.js"></script>
+    <script defer src="compare_pass.js"></script>
 	
 	<!-- reCaptcha -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -26,7 +26,7 @@
             <div>{FEEDBACK}</div>
         </header>
         <section>
-            <form method="{METHOD}" action="{REGISTER_URL}">
+            <form id="form" method="{METHOD}" action="{REGISTER_URL}">
                 <header>
                     <h2>Crea un nou compte</h2>
                 </header>
@@ -34,9 +34,12 @@
                 <input id="register_username" type="text" name="user_name" value="{REGISTER_USERNAME}" required/>
                 <label for="register_mail">Correu electrònic</label>
                 <input id="register_mail" type="email" name="user_mail" required/>
-                <label for="register_password">Contrasenya</label>
-                <input id="register_password" type="password" pattern=".{8,}"name="user_password" required/>
+                <label for="password">Contrassenya</label>
+                <input id="password" type="password" pattern=".{8,}"name="user_password" required/>
+                <label for="password_copy">Confirma la contrassenya</label>
+                <input id="password_copy" type="password" pattern=".{8,}"name="user_password" required/>
                 <p>Mida mínima 8 caràcters.</p>
+                <div id="error"></div>
 				</br>
 				<div class="g-recaptcha" data-sitekey="6LdZGDooAAAAAIbL84LHgRol1OgaXvQk7XMEyxkK"></div>
 				</br>
