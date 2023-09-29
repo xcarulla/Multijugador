@@ -3,7 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
  
-require_once '../vendor/autoload.php';
+require '../private/PHPMailer-6.8.1/src/Exception.php';
+require '../private/PHPMailer-6.8.1/src/PHPMailer.php';
+require '../private/PHPMailer-6.8.1/src/SMTP.php';
 
 // defaults
 $template = 'home';
