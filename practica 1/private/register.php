@@ -35,18 +35,19 @@
                 <input id="register_username" type="text" name="user_name" value="{REGISTER_USERNAME}" required/>
                 <div id="errorUsername" class="error"></div>
                 <label for="register_mail">Correu electrònic</label>
-                <input id="register_mail" type="email" name="user_mail" required/>
+                <input id="register_mail" type="email" required/>
                 <div id="errorUsermail" class="error"></div>
                 <label for="password">Contrassenya</label>
-                <input id="password" type="password" pattern=".{8,}"name="user_password" required/>
+                <input id="password" type="password" pattern=".{8,}" required/>
                 <label for="password_copy">Confirma la contrassenya</label>
-                <input id="password_copy" type="password" pattern=".{8,}"name="user_password_copy" required/>
+                <input id="password_copy" type="password" pattern=".{8,}" required/>
                 <p>Mida mínima 8 caràcters.</p>
                 <div id="error" class="error"></div>
 				</br>
 				<div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LdZGDooAAAAAIbL84LHgRol1OgaXvQk7XMEyxkK"></div>
 				<div id="errorReCaptcha" class="error"></div>
                 </br>
+                <div id="errorRegister" class="error"></div>
                 <input type="submit" name="register" value="Registrar-se" />
             </form>
         </section>

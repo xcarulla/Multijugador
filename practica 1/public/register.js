@@ -10,11 +10,14 @@ function recaptchaCallback() {
 // -------- Mail i Usuari --------
 const errorUsername = document.getElementById('errorUsername')
 const errorUsermail = document.getElementById('errorUsermail')
+const errorRegister = document.getElementById('errorRegister')
 const username = document.getElementById('register_username')
 const usermail = document.getElementById('register_mail')
+const userpassword = document.getElementById('password')
 
 usernameValid = false
 usermailValid = false
+userRegistred = false
 
 // -------- Comprovar formulari --------
 form.addEventListener('submit', (e) => {
@@ -55,13 +58,30 @@ form.addEventListener('submit', (e) => {
     } else errorElementCaptcha.innerText = ""
 
     if(usernameValid && recaptchaChecked && usermailValid){
-        var formAtributs = document.createElement('input')
-        formAtributs.setAttribute('type','hidden')
-        formAtributs.setAttribute('name','register')
-        formAtributs.setAttribute('value','Registrar-se')
-        form.appendChild(formAtributs)
-        
-        form.submit()
+        registerUser()
+            .then(result => {
+                if(result) {
+                    userRegistred = true
+                    errorRegister.innerText = ""
+                } else {
+                    userRegistred = false
+                    errorRegister.innerText = "Error al registrar."
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error)
+                alert("Error al verificar les dades")
+        })
+
+        if (userRegistred){
+            var formAtributs = document.createElement('input')
+            formAtributs.setAttribute('type','hidden')
+            formAtributs.setAttribute('name','register')
+            formAtributs.setAttribute('value','Registrar-se')
+            form.appendChild(formAtributs)
+            
+            form.submit()
+        }
     }
 })
 
@@ -97,6 +117,30 @@ function checkUsermail() {
 
     return new Promise((resolve,reject) => {
         fetch('verificarDadesRegistre.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if(data === "ok") {
+                resolve(true)
+            } else resolve(false)
+        })
+        .catch(error => {
+            console.error("Error en el fetch:", error);
+            reject(error)
+        })
+    })
+}
+
+function registerUser() {
+    const formData = new FormData();
+    formData.append('user_name', username.value)
+    formData.append('user_mail', usermail.value)
+    formData.append('user_password', userpassword.value)
+
+    return new Promise((resolve, reject) => {
+        fetch('registerUser.php', {
             method: 'POST',
             body: formData
         })

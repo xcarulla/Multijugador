@@ -33,15 +33,12 @@ if (!isset($_SESSION['logged_in']) && isset($_COOKIE['user_name'])) {
     $template = "login";
     $configuration['{LOGIN_USERNAME}'] = '';
 }
-echo "a";
 // parameter processing
-$parametersPOST = $_POST;
 $parameters = $_GET;
 
 if (isset($parameters['page'])) {
     if ($parameters['page'] == 'register') {
         $template = 'register';
-        $configuration['{METHOD}'] = 'POST';
         $configuration['{REGISTER_USERNAME}'] = '';
         $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Ja tinc un compte';
     } else if ($parameters['page'] == 'login') {
@@ -69,30 +66,9 @@ if (isset($parameters['page'])) {
             $configuration['{USER_MAIL}'] = $user->user_mail;
         }
     }   
-} else if (isset($_POST['register'])) {
-    echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    if($parametersPOST['g-recaptcha-response']){
-        $salt = bin2hex(random_bytes(16));
-        $hash = hash_pbkdf2("gost-crypto", $parametersPOST['user_password'], $salt, 1000);
-
-        $db = new PDO($db_connection);
-        $sql = 'INSERT INTO users (user_name, user_password, salt, user_mail) VALUES (:user_name, :user_password, :salt, :user_mail)';
-        $query = $db->prepare($sql);
-        $query->bindValue(':user_name', $parametersPOST['user_name']);
-        $query->bindValue(':user_password', $hash);
-        $query->bindValue(':salt', $salt);
-        $query->bindValue(':user_mail', $parametersPOST['user_mail']);
-        if ($query->execute()) {
-            $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parametersPOST['user_name']) . '</b>';
-            $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar sessió';
-        } else {
-            // Això no s'executarà mai (???)
-            $configuration['{FEEDBACK}'] = "<mark>ERROR: No s'ha pogut crear el compte <b>"
-                . htmlentities($parametersPOST['user_name']) . '</b></mark>';
-        }
-    } else {
-        $configuration['{FEEDBACK}'] = "<mark>ERROR: Algun dels camps clau està buit. </mark>";
-    }
+} else if (isset($parameters['register'])) {
+    $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parameters['user_name']) . '</b>';
+    $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar sessió';
 } else if (isset($parameters['login'])) {
     if(isset($parameters['recordam']) && $parameters['recordam'] == 1){
         setcookie('user_name', $parameters['user_name'], time() + 2592000);
