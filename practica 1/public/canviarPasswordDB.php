@@ -6,11 +6,15 @@ $_email = $_POST['email'];
 $db_connection = 'sqlite:..\private\users.db';
 $db = new PDO($db_connection);
 
+$salt = bin2hex(random_bytes(16));
+$hash = hash_pbkdf2("gost-crypto", $_password, $salt, 1000);
+
 $sql = "UPDATE users 
-            SET user_password=:pass
+            SET user_password=:pass, salt=:salt
             WHERE user_mail = :email";
 $query = $db->prepare($sql);
-$query->bindValue(':pass', $_password);
+$query->bindValue(':pass', $hash);
+$query->bindValue(':salt', $salt);
 $query->bindValue(':email', $_email);
 
 $sql2 = "UPDATE users

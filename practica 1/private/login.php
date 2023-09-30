@@ -33,7 +33,7 @@
                 <label for="login_username">Nom d'usuari</label>
                 <input id="login_username" type="text" name="user_name" value="{LOGIN_USERNAME}" />
                 <label for="login_password">Contrasenya</label>
-                <input id="login_password" type="password" name="user_password" />
+                <input id="login_password" type="password"/>
                 <div id="errorDades" class="error"></div>
                 </br>
 				<div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LdZGDooAAAAAIbL84LHgRol1OgaXvQk7XMEyxkK"></div>

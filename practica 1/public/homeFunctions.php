@@ -5,6 +5,7 @@ if($lookat == "logout") {
 
     if (isset($_COOKIE['user_name'])) {
         setcookie('user_name', '', time() - 3600, '/');
+        $_SESSION = array();
         session_destroy();
         echo 'success';
     } else echo 'error';
@@ -21,6 +22,7 @@ if($lookat == "logout") {
     if($query->execute()) {
         if (isset($_COOKIE['user_name'])) {
             setcookie('user_name', '', time() - 3600, '/');
+            $_SESSION = array();
             session_destroy();
             echo 'success';
         } else echo 'error';

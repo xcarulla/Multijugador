@@ -29,16 +29,19 @@ session_start();
 if (!isset($_SESSION['logged_in']) && isset($_COOKIE['user_name'])) {
     $_SESSION['logged_in'] = true;
     $_SESSION['user_name'] = $_COOKIE['user_name'];
-}
-if (!isset($_SESSION['logged_in'])) {
+}else {
     $template = "login";
     $configuration['{LOGIN_USERNAME}'] = '';
 }
+echo "a";
 // parameter processing
+$parametersPOST = $_POST;
 $parameters = $_GET;
+
 if (isset($parameters['page'])) {
     if ($parameters['page'] == 'register') {
         $template = 'register';
+        $configuration['{METHOD}'] = 'POST';
         $configuration['{REGISTER_USERNAME}'] = '';
         $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Ja tinc un compte';
     } else if ($parameters['page'] == 'login') {
@@ -66,51 +69,39 @@ if (isset($parameters['page'])) {
             $configuration['{USER_MAIL}'] = $user->user_mail;
         }
     }   
-} else if (isset($parameters['register'])) {
-    if($parameters['g-recaptcha-response']){
+} else if (isset($_POST['register'])) {
+    echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    if($parametersPOST['g-recaptcha-response']){
         $salt = bin2hex(random_bytes(16));
-        $hash = hash_pbkdf2("gost-crypto", $parameters['user_password'], $salt, 1000);
+        $hash = hash_pbkdf2("gost-crypto", $parametersPOST['user_password'], $salt, 1000);
 
         $db = new PDO($db_connection);
-        $sql = 'INSERT INTO users (user_name, DEV_pass_hash, user_password, salt, user_mail) VALUES (:user_name, :hash_, :user_password, :salt, :user_mail)';
+        $sql = 'INSERT INTO users (user_name, user_password, salt, user_mail) VALUES (:user_name, :user_password, :salt, :user_mail)';
         $query = $db->prepare($sql);
-        $query->bindValue(':user_name', $parameters['user_name']);
-        $query->bindValue(':hash_', $hash);
-        $query->bindValue(':user_password', $parameters['user_password']);
+        $query->bindValue(':user_name', $parametersPOST['user_name']);
+        $query->bindValue(':user_password', $hash);
         $query->bindValue(':salt', $salt);
-        $query->bindValue(':user_mail', $parameters['user_mail']);
+        $query->bindValue(':user_mail', $parametersPOST['user_mail']);
         if ($query->execute()) {
-            $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parameters['user_name']) . '</b>';
+            $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parametersPOST['user_name']) . '</b>';
             $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar sessió';
         } else {
             // Això no s'executarà mai (???)
             $configuration['{FEEDBACK}'] = "<mark>ERROR: No s'ha pogut crear el compte <b>"
-                . htmlentities($parameters['user_name']) . '</b></mark>';
+                . htmlentities($parametersPOST['user_name']) . '</b></mark>';
         }
     } else {
         $configuration['{FEEDBACK}'] = "<mark>ERROR: Algun dels camps clau està buit. </mark>";
     }
 } else if (isset($parameters['login'])) {
-    $db = new PDO($db_connection);
-    $sql = 'SELECT * FROM users WHERE user_name = :user_name and user_password = :user_password';
-    $query = $db->prepare($sql);
-    $query->bindValue(':user_name', $parameters['user_name']);
-    $query->bindValue(':user_password', $parameters['user_password']);
-    $query->execute();
-    $result_row = $query->fetchObject();
-    if ($result_row) {
-        if(isset($parameters['recordam']) && $parameters['recordam'] == 1){
-            setcookie('user_name', $parameters['user_name'], time() + 2592000);
-        }
-        $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($parameters['user_name']) . '</b>';
-        $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
-        $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
-        $configuration['{USER_NAME}'] = htmlentities($parameters['user_name']);
-        $template = "home";
-
-    } else {
-        $configuration['{FEEDBACK}'] = '<mark>ERROR: Usuari desconegut o contrasenya incorrecta</mark>';
+    if(isset($parameters['recordam']) && $parameters['recordam'] == 1){
+        setcookie('user_name', $parameters['user_name'], time() + 2592000);
     }
+    $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($parameters['user_name']) . '</b>';
+    $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
+    $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
+    $configuration['{USER_NAME}'] = htmlentities($parameters['user_name']);
+    $template = "home";
 } else if (isset($parameters['forgotpass'])){
     $db = new PDO($db_connection);
     $email = $parameters['user_mail'];
@@ -157,7 +148,7 @@ if (isset($parameters['page'])) {
 
     echo $configuration['{USER_MAIL}'];
 
-} else if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==1){
+} else if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==1 && isset($_COOKIE['user_name'])){
     $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
     $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
     $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($_SESSION['user_name']) . '</b>';

@@ -23,7 +23,7 @@
     <!-- contingut visible de la pàgina -->
     <main>
         <header>
-            <h1><a href="/">{SITE_NAME}</a></h1>
+            <h1>{SITE_NAME}</h1>
             <div>{FEEDBACK}</div>
         </header>
         <section>
