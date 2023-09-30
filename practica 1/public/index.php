@@ -68,11 +68,16 @@ if (isset($parameters['page'])) {
     }   
 } else if (isset($parameters['register'])) {
     if($parameters['g-recaptcha-response']){
+        $salt = bin2hex(random_bytes(16));
+        $hash = hash_pbkdf2("gost-crypto", $parameters['user_password'], $salt, 1000);
+
         $db = new PDO($db_connection);
-        $sql = 'INSERT INTO users (user_name, user_password, user_mail) VALUES (:user_name, :user_password, :user_mail)';
+        $sql = 'INSERT INTO users (user_name, DEV_pass_hash, user_password, salt, user_mail) VALUES (:user_name, :hash_, :user_password, :salt, :user_mail)';
         $query = $db->prepare($sql);
         $query->bindValue(':user_name', $parameters['user_name']);
+        $query->bindValue(':hash_', $hash);
         $query->bindValue(':user_password', $parameters['user_password']);
+        $query->bindValue(':salt', $salt);
         $query->bindValue(':user_mail', $parameters['user_mail']);
         if ($query->execute()) {
             $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parameters['user_name']) . '</b>';
@@ -100,7 +105,7 @@ if (isset($parameters['page'])) {
         $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($parameters['user_name']) . '</b>';
         $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
         $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
-        
+        $configuration['{USER_NAME}'] = htmlentities($parameters['user_name']);
         $template = "home";
 
     } else {
@@ -156,6 +161,7 @@ if (isset($parameters['page'])) {
     $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
     $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
     $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($_SESSION['user_name']) . '</b>';
+    $configuration['{USER_NAME}'] = htmlentities($_SESSION['user_name']);
     $template = "home";
 }
 // process template and show output

@@ -13,6 +13,13 @@ $query = $db->prepare($sql);
 $query->bindValue(':pass', $_password);
 $query->bindValue(':email', $_email);
 
-if($query->execute()) {
+$sql2 = "UPDATE users
+            SET reset_token_hash=NULL,
+                reset_token_expires_at=NULL
+            WHERE user_mail= :email";
+$query2 = $db->prepare($sql2);
+$query2->bindValue(':email', $_email);
+
+if($query->execute() && $query2->execute()) {
     echo "ok";
 } else echo "error";
