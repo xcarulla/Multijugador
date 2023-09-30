@@ -7,5 +7,7 @@ form.addEventListener('submit', (e) => {
     if(password.value != password_copy.value){
         e.preventDefault()
         errorElement.innerText = "La contrassenya no coincideix."
+    } else {
+        errorElement.innerText = ""
     }
 })

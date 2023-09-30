@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
     <script defer src="compare_pass.js"></script>
+    <script defer src="reset-pass.js"></script>
 </head>
 
 <body>
@@ -31,7 +32,7 @@
                 </header>
 
                 <!-- <label for="email">Email:</label> -->
-                <!-- <input id="email" type="email" name="emails" value="{USER_MAIL}" readonly/> -->
+                <input id="email" type="hidden" value="{USER_MAIL}"/>
                 <label for="password">Nova contrassenya:</label>
                 <input id="password" pattern=".{8,}" type="password" name="password" required/>
                 <label for="password_copy">Confirma la contrassenya:</label>

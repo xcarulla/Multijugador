@@ -52,7 +52,7 @@ if (isset($parameters['page'])) {
             $template = 'bad-token';
         } else {
             $template = 'reset-pass';
-            //$configuration['{USER_MAIL}'] = $user->user_mail;
+            $configuration['{USER_MAIL}'] = $user->user_mail;
         }
     }   
 } else if (isset($parameters['register'])) {

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
     <script defer src="compare_pass.js"></script>
+    <script defer src="register.js"></script>
 	
 	<!-- reCaptcha -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -32,18 +33,21 @@
                 </header>
                 <label for="register_username">Nom d'usuari</label>
                 <input id="register_username" type="text" name="user_name" value="{REGISTER_USERNAME}" required/>
+                <div id="errorUsername"></div>
                 <label for="register_mail">Correu electrònic</label>
                 <input id="register_mail" type="email" name="user_mail" required/>
+                <div id="errorUsermail"></div>
                 <label for="password">Contrassenya</label>
                 <input id="password" type="password" pattern=".{8,}"name="user_password" required/>
                 <label for="password_copy">Confirma la contrassenya</label>
-                <input id="password_copy" type="password" pattern=".{8,}"name="user_password" required/>
+                <input id="password_copy" type="password" pattern=".{8,}"name="user_password_copy" required/>
                 <p>Mida mínima 8 caràcters.</p>
                 <div id="error"></div>
 				</br>
-				<div class="g-recaptcha" data-sitekey="6LdZGDooAAAAAIbL84LHgRol1OgaXvQk7XMEyxkK"></div>
-				</br>
-                <input type="submit" name="register" value="Crear compte" />
+				<div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LdZGDooAAAAAIbL84LHgRol1OgaXvQk7XMEyxkK"></div>
+				<div id="errorReCaptcha"></div>
+                </br>
+                <input type="submit" name="register" value="Registrar-se" />
             </form>
         </section>
         <section>
