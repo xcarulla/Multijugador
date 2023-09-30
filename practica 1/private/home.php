@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="mvp.css">
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
+    <script defer src="logout.js"></script>
 </head>
 
 <body>
@@ -23,12 +24,15 @@
         </header>
         <section>
             <div>
-                <a href="{LOGIN_LOGOUT_URL}">{LOGIN_LOGOUT_TEXT}</a>
+                <!-- HTML !-->
+                <button id="logoutButton" class="button-62" role="button">Tancar sessió</button>
+
             </div>
         </section>
+        <br>
         <section>
             <div>
-                <a href="{REGISTER_URL}">Registrar-me</a>
+                <a class="error" href="/">Esborrar compte</a>
             </div>
         </section>
     </main>

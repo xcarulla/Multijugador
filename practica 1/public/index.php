@@ -26,17 +26,14 @@ $configuration = array(
 
 // Comprovar cookies:
 session_start();
-
 if (!isset($_SESSION['logged_in']) && isset($_COOKIE['user_name'])) {
     $_SESSION['logged_in'] = true;
     $_SESSION['user_name'] = $_COOKIE['user_name'];
 }
-
 if (!isset($_SESSION['logged_in'])) {
     $template = "login";
     $configuration['{LOGIN_USERNAME}'] = '';
 }
-
 // parameter processing
 $parameters = $_GET;
 if (isset($parameters['page'])) {
@@ -100,9 +97,12 @@ if (isset($parameters['page'])) {
         if(isset($parameters['recordam']) && $parameters['recordam'] == 1){
             setcookie('user_name', $parameters['user_name'], time() + 2592000);
         }
-        $configuration['{FEEDBACK}'] = '"Sessió" iniciada com <b>' . htmlentities($parameters['user_name']) . '</b>';
+        $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($parameters['user_name']) . '</b>';
         $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
         $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
+        
+        $template = "home";
+
     } else {
         $configuration['{FEEDBACK}'] = '<mark>ERROR: Usuari desconegut o contrasenya incorrecta</mark>';
     }
@@ -152,6 +152,11 @@ if (isset($parameters['page'])) {
 
     echo $configuration['{USER_MAIL}'];
 
+} else if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==1){
+    $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
+    $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
+    $configuration['{FEEDBACK}'] = 'Benvingut/da <b>' . htmlentities($_SESSION['user_name']) . '</b>';
+    $template = "home";
 }
 // process template and show output
 $html = file_get_contents($template . '.php', true);
