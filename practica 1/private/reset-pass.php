@@ -37,7 +37,7 @@
                 <input id="password" pattern=".{8,}" type="password" name="password" required/>
                 <label for="password_copy">Confirma la contrassenya:</label>
                 <input id="password_copy" pattern=".{8,}" type="password" name="password_copy" required/>
-                <div id="error"></div>
+                <div id="error" class="error"></div>
                 <input type="submit" name="changepass" value="Canviar"/>
             </form>
         </section>

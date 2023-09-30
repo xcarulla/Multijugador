@@ -27,7 +27,7 @@ form.addEventListener('submit', (e) => {
                 errorUsername.innerText = ""
             } else {
                 usernameValid = false
-                errorUsername.innerText = "Nom d'usuari no vàlid."
+                errorUsername.innerText = "Nom d'usuari ja existent."
             }
         })
         .catch(error => {
@@ -42,7 +42,7 @@ form.addEventListener('submit', (e) => {
                 errorUsermail.innerText = ""
             } else {
                 usermailValid = false
-                errorUsermail.innerText = "Email no vàlid."
+                errorUsermail.innerText = "Email ja registrat."
             }
         })
         .catch(error => {

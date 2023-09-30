@@ -1,1 +1,4 @@
 ﻿/* Afegeix aquí les teves regles d'estil */
+.error {
+    color: rgb(252, 1, 1)
+}

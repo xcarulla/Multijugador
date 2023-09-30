@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="mvp.css">
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
-    <script defer src="el_meu.js"></script>
 </head>
 
 <body>

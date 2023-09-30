@@ -12,14 +12,13 @@
     <link rel="stylesheet" href="mvp.css">
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
-    <script defer src="el_meu.js"></script>
 </head>
 
 <body>
     <!-- contingut visible de la pàgina -->
     <main>
         <header>
-            <h1>ERROR</h1>
+            <h1 class="error">ERROR</h1>
         </header>
         <section>
             <div>

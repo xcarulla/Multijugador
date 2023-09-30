@@ -23,6 +23,20 @@ $configuration = array(
     '{RESET_PASS_URL}'    => '/?page=resetpass',
     '{USER_MAIL}'         => ''
 );
+
+// Comprovar cookies:
+session_start();
+
+if (!isset($_SESSION['logged_in']) && isset($_COOKIE['user_name'])) {
+    $_SESSION['logged_in'] = true;
+    $_SESSION['user_name'] = $_COOKIE['user_name'];
+}
+
+if (!isset($_SESSION['logged_in'])) {
+    $template = "login";
+    $configuration['{LOGIN_USERNAME}'] = '';
+}
+
 // parameter processing
 $parameters = $_GET;
 if (isset($parameters['page'])) {
@@ -83,6 +97,9 @@ if (isset($parameters['page'])) {
     $query->execute();
     $result_row = $query->fetchObject();
     if ($result_row) {
+        if(isset($parameters['recordam']) && $parameters['recordam'] == 1){
+            setcookie('user_name', $parameters['user_name'], time() + 2592000);
+        }
         $configuration['{FEEDBACK}'] = '"Sessió" iniciada com <b>' . htmlentities($parameters['user_name']) . '</b>';
         $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar "sessió"';
         $configuration['{LOGIN_LOGOUT_URL}'] = '/?page=logout';
@@ -94,7 +111,8 @@ if (isset($parameters['page'])) {
     $email = $parameters['user_mail'];
     $token = bin2hex(random_bytes(16));
     $token_hash = hash("sha256", $token);
-    $dataExpiracio = date("Y-m-d", time() + 60*60*24);         //$dataExpiracio = date("Y-m-d H:m:s", time() + 60*30);
+    date_default_timezone_set('Europe/Madrid');
+    $dataExpiracio = date("Y-m-d H:i:s", time() + 60*30);
 
     $sql = 
     'UPDATE users
