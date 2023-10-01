@@ -1,51 +1,53 @@
+const form = document.getElementById('form')
 
-// -------- Mail --------
-const email = document.getElementById('email')
+// -------- Usuari i Password --------
+const errorMail = document.getElementById('errorMail')
+const mail = document.getElementById('register_mail')
 
-passwordCanviada = false
+mailValid = false
 
 // -------- Comprovar formulari --------
 form.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    changePassword()
+    checkMail()
         .then(result => {
             if(result) {
-                passwordCanviada = true
+                mailValid = true
+                errorMail.innerText = ""
             } else {
-                passwordCanviada = false
+                mailValid = false
+                errorMail.innerText = "Cap compte registrat amb aquest correu."
             }
         })
         .catch(error => {
             console.error("Error:", error)
-            alert("Error al canviar la contrasenya.")
-        })
+            alert("Error al comprovar el correu")
+    })
 
-    if(passwordCanviada){
+    if(mailValid){
         var formAtributs = document.createElement('input')
         formAtributs.setAttribute('type','hidden')
-        formAtributs.setAttribute('name','changepass')
-        formAtributs.setAttribute('value','Canviar')
+        formAtributs.setAttribute('name','forgotpass')
+        formAtributs.setAttribute('value','Enviar')
         form.appendChild(formAtributs)
-        
         form.submit()
     }
 })
 
 // Comprovar base de dades
 
-function changePassword() {
+function checkMail() {
     const formData = new FormData();
-    formData.append('password',password.value)
-    formData.append('email',email.value)
-
+    formData.append('mail',mail.value)
     return new Promise((resolve,reject) => {
-        fetch('canviarPasswordDB.php', {
+        fetch('revisarMail.php', { // Mirem la base de dades amb php
             method: 'POST',
             body: formData
         })
         .then(response => response.text())
         .then(data => {
+            console.log(data)
             if(data === "ok") {
                 resolve(true)
             } else resolve(false)

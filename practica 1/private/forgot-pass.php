@@ -12,24 +12,26 @@
     <link rel="stylesheet" href="mvp.css">
     <link rel="stylesheet" href="el_meu.css">
     <!-- per afegir interactivitat a la pàgina -->
+    <script defer src="revisarMail.js"></script>
 </head>
 
 <body>
     <!-- contingut visible de la pàgina -->
     <main>
         <header>
-            <h1><a href="/">{SITE_NAME}</a></h1>
+            <h1><a href="/?page=login">{SITE_NAME}</a></h1>
             <div>{FEEDBACK}</div>
         </header>
         <section>
 
-            <form method="{METHOD}" action="{REGISTER_URL}">
+            <form id="form" method="{METHOD}" action="{REGISTER_URL}">
                 <header>
-                    <h2>Restaurar contrassenya</h2>
+                    <h2>Restaurar contrasenya</h2>
                 </header>
 
                 <label for="register_mail">Correu electrònic</label>
                 <input id="register_mail" type="email" name="user_mail" required/>
+                <div id="errorMail" class="error"></div>
 
                 <input type="submit" name="forgotpass" value="Enviar" />
             </form>

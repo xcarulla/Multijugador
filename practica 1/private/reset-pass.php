@@ -4,7 +4,7 @@
 <head>
     <!-- dades tècniques de la pàgina -->
     <meta charset="utf-8">
-    <title>{SITE_NAME} :: Canviar contrassenya</title>
+    <title>{SITE_NAME} :: Canviar contrasenya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- per a dispositius mòbils -->
     <meta name="author" content="Antonio Bueno (UdG)">
     <!-- estètica de la pàgina -->
@@ -27,15 +27,15 @@
 
             <form id="form" method="{METHOD}" action="{RESET_PASS_URL}">
                 <header>
-                    <h2>Canviar contrassenya</h2>
+                    <h2>Canviar contrasenya</h2>
                     <!-- <h3>Compte {USER_MAIL}</h3-->
                 </header>
 
                 <!-- <label for="email">Email:</label> -->
                 <input id="email" type="hidden" value="{USER_MAIL}"/>
-                <label for="password">Nova contrassenya:</label>
+                <label for="password">Nova contrasenya:</label>
                 <input id="password" pattern=".{8,}" type="password" name="password" required/>
-                <label for="password_copy">Confirma la contrassenya:</label>
+                <label for="password_copy">Confirma la contrasenya:</label>
                 <input id="password_copy" pattern=".{8,}" type="password" name="password_copy" required/>
                 <div id="error" class="error"></div>
                 <input type="submit" name="changepass" value="Canviar"/>

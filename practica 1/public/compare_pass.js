@@ -6,7 +6,7 @@ const errorElement = document.getElementById('error')
 form.addEventListener('submit', (e) => {
     if(password.value != password_copy.value){
         e.preventDefault()
-        errorElement.innerText = "La contrassenya no coincideix."
+        errorElement.innerText = "La contrasenya no coincideix."
     } else {
         errorElement.innerText = ""
     }

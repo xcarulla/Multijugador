@@ -37,9 +37,11 @@
                 <label for="register_mail">Correu electrònic</label>
                 <input id="register_mail" type="email" required/>
                 <div id="errorUsermail" class="error"></div>
-                <label for="password">Contrassenya</label>
+
+                <label for="password">Contrasenya</label>
                 <input id="password" type="password" pattern=".{8,}" required/>
-                <label for="password_copy">Confirma la contrassenya</label>
+
+                <label for="password_copy">Confirma la contrasenya</label>
                 <input id="password_copy" type="password" pattern=".{8,}" required/>
                 <p>Mida mínima 8 caràcters.</p>
                 <div id="error" class="error"></div>

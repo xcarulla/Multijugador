@@ -17,7 +17,7 @@ $configuration = array(
     '{METHOD}'            => 'GET', // es veuen els paràmetres a l'URL i a la consola (???)
     '{REGISTER_URL}'      => '/?page=register',
     '{SITE_NAME}'         => 'La meva pàgina',
-    '{PASS_MAIL}'         => 'No recordo la contrassenya',
+    '{PASS_MAIL}'         => 'No recordo la contrasenya',
     '{PASS_MAIL_URL}'     => '/?page=passmail',
     '{PASS_RESET}'        => 'pass reset',
     '{RESET_PASS_URL}'    => '/?page=resetpass',
@@ -122,9 +122,9 @@ if (isset($parameters['page'])) {
         $mail->setFrom('multijugador1F@gmail.com', 'Multijugador Grup 1F');
         $mail->addAddress($email, 'usuari');
         $mail->isHTML(true);
-        $mail->Subject = 'Restaurar contrassenya';
-        $mail->Body = "<h4> Restaurar contrassenya </h4>
-            Clica <a href=\"http://localhost:8000/?page=resetpass&token=$token\">aquí</a> per canviar la contrassenya.";
+        $mail->Subject = 'Restaurar contrasenya';
+        $mail->Body = "<h4> Restaurar contrasenya </h4>
+            Clica <a href=\"http://localhost:8000/?page=resetpass&token=$token\">aquí</a> per canviar la contrasenya.";
         if (!$mail->send()) {
             echo '<script language="javascript">alert("Error: Mail no enviat. (' . $mail->ErrorInfo . '");</script>)';
         } else {
