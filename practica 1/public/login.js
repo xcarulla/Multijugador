@@ -26,7 +26,7 @@ form.addEventListener('submit', (e) => {
                 errorDades.innerText = ""
             } else {
                 dadesValid = false
-                errorDades.innerText = "Dades incorrectes."
+                errorDades.innerText = "Dades incorrectes o correu no verificat."
             }
         })
         .catch(error => {

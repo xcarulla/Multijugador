@@ -64,6 +64,7 @@ form.addEventListener('submit', (e) => {
                     userRegistred = true
                     errorRegister.innerText = ""
                 } else {
+                    console.log(result)
                     userRegistred = false
                     errorRegister.innerText = "Error al registrar."
                 }
@@ -146,6 +147,7 @@ function registerUser() {
         })
         .then(response => response.text())
         .then(data => {
+            console.log(data)
             if(data === "ok") {
                 resolve(true)
             } else resolve(false)

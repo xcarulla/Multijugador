@@ -17,7 +17,7 @@ if($lookat == "dades"){
         $hash = hash_pbkdf2("gost-crypto", $passwordEntrada, $respostaSalt, 1000);
 
         $sql = "SELECT user_name FROM users
-        WHERE user_password= :user_password AND user_name= :username";
+        WHERE user_password= :user_password AND user_name= :username AND verificat=1";
         $query = $db->prepare($sql);
         $query->bindValue(':user_password', $hash);
         $query->bindValue(':username', $user_name);

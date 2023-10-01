@@ -65,9 +65,21 @@ if (isset($parameters['page'])) {
             $template = 'reset-pass';
             $configuration['{USER_MAIL}'] = $user->user_mail;
         }
-    }   
+    } else if ($parameters['page'] == 'validateuser'){
+        $db = new PDO($db_connection);
+        $sql = 
+        'UPDATE users
+        SET verificat = 1
+        WHERE 
+            user_mail = :email';
+        $query = $db->prepare($sql);
+        $query->bindValue(':email', $parameters['mail']);
+        if($query->execute()){
+            $template = 'login';
+        }
+    }
 } else if (isset($parameters['register'])) {
-    $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parameters['user_name']) . '</b>';
+    $configuration['{FEEDBACK}'] = 'Creat el compte <b>' . htmlentities($parameters['user_name']) . '</b><br><h2 class="error">Has de verificar el correu</h2>';
     $configuration['{LOGIN_LOGOUT_TEXT}'] = 'Tancar sessió';
 } else if (isset($parameters['login'])) {
     if(isset($parameters['recordam']) && $parameters['recordam'] == 1){
